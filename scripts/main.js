@@ -1,21 +1,25 @@
-import {fetchLuke} from "./starWarsData.js"
+import { fetchLuke } from "./starWarsData.js";
 
 const displayLuke = async () => {
-  const data = await fetchLuke()
-  renderLukeToDOM(data)
-}
-
-const renderLukeToDOM = (data) => {
-  let html = `
-    <article>
-      <section class="card">
-        <p>Name: ${data.name}</p>
-        <p>height: ${data.height}</p>
-      </section>
-    </article>
-  `
-  document.getElementById('app').innerHTML = html
-}
-
-displayLuke()
-
+  const data = await fetchLuke();
+  sortPlanetDiameter(data);
+};
+const sortPlanetDiameter = (data) => {
+  let diameters = data.results.sort((a, b) => {
+    return parseInt(a.diameter) - parseInt(b.diameter);
+  });
+  let diameterHtml = `<ul>`;
+  for (let option of diameters) {
+    diameterHtml += `
+        <article>
+          <section class="card">
+            <p>Name: ${option.name}</p>
+            <p>Diameter: ${option.diameter}</p>
+          </section>
+        </article>
+      `;
+  }
+  diameterHtml += `</ul>`;
+  document.getElementById("app").innerHTML = diameterHtml;
+};
+displayLuke();
